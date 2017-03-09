@@ -5,6 +5,7 @@
 include:
   - sensu
   - sensu.rabbitmq_conf
+  - sensu.checks_conf
 
 {% if grains['os_family'] == 'Windows' %}
 /opt/sensu/bin/sensu-client.xml:
@@ -117,17 +118,3 @@ install_{{ gem_name }}:
     - source: {{ salt['pillar.get']('sensu:client:gem_source', None) }}
 {% endfor %}
 
-{%- if salt['pillar.get']('sensu:checks') %}
-
-sensu_checks_file:
-  file.serialize:
-    - name: {{ sensu.paths.checks_file }}
-    - dataset:
-        checks: {{ salt['pillar.get']('sensu:checks') }}
-    - formatter: json
-    - require:
-      - pkg: sensu
-    - watch_in:
-      - service: sensu-client
-
-{%- endif %}

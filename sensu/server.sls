@@ -5,6 +5,7 @@ include:
   - sensu.api_conf # Some handlers need to access the API server
   - sensu.rabbitmq_conf
   - sensu.redis_conf
+  - sensu.checks_conf
 
 /etc/sensu/conf.d:
   file.recurse:
@@ -88,3 +89,5 @@ sensu-server:
     - require:
       - file: /etc/sensu/conf.d/redis.json
       - file: /etc/sensu/conf.d/rabbitmq.json
+    - watch:
+      - file: /etc/sensu/conf.d/*
